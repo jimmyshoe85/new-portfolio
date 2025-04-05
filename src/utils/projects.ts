@@ -15,7 +15,17 @@ export async function getProjects(): Promise<Project[]> {
           const data = await loader() as { default: Project };
           console.log(`Loaded project from ${path}:`, data.default);
           
-          return data.default;
+          // Add default thumbnail URL if it's missing
+          const projectFolder = path.replace('/project.json', '');
+          // Use the same path pattern as screenshots
+          const thumbnailUrl = `${projectFolder}/thumbnail.png`;
+          console.log(`Project thumbnail URL: ${thumbnailUrl}`);
+          
+          // Return project with thumbnailUrl included
+          return {
+            ...data.default,
+            thumbnailUrl
+          };
         } catch (err) {
           console.error(`Error loading project from ${path}:`, err);
           return null;
@@ -24,7 +34,7 @@ export async function getProjects(): Promise<Project[]> {
     );
     
     // Filter out null values
-    const validProjects = projectData.filter(Boolean) as Project[];
+    const validProjects = projectData.filter(Boolean) as ProjectDetails[];
     console.log('Valid projects loaded:', validProjects);
     
     // Sort by date
@@ -83,8 +93,9 @@ export async function getProjectDetails(slug: string): Promise<ProjectDetails | 
       console.error("Error fetching details.md:", fetchError);
     }
     
-    // Use thumbnail.png from the project folder
+    // Use the same path pattern as screenshots
     const thumbnailUrl = `${projectFolder}/thumbnail.png`;
+    console.log(`Setting thumbnail URL: ${thumbnailUrl}`);
     
     // Get screenshot paths
     const screenshots = Array.from({ length: 6 }, (_, i) => 

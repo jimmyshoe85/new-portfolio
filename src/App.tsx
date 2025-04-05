@@ -5,6 +5,9 @@ import { ProjectDetails } from './types';
 import ProjectDetail from './pages/ProjectDetail';
 import { getProjects } from './utils/projects';
 
+// Default fallback image URL
+const DEFAULT_IMAGE_URL = "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070";
+
 function App() {
   const [projects, setProjects] = useState<ProjectDetails[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -14,6 +17,12 @@ function App() {
       try {
         const projectData = await getProjects();
         console.log('Loaded projects in App.tsx:', projectData);
+        
+        // Log each project's thumbnail URL for debugging
+        projectData.forEach(project => {
+          console.log(`Project ${project.title} thumbnail: ${project.thumbnailUrl}`);
+        });
+        
         setProjects(projectData);
       } catch (error) {
         console.error('Error loading projects:', error);
@@ -25,7 +34,7 @@ function App() {
           github: "https://github.com/jamesmanning/devconnect",
           date: "2025-04-05",
           description: "A social platform for developers to connect and collaborate",
-          thumbnailUrl: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070",
+          thumbnailUrl: DEFAULT_IMAGE_URL,
           screenshots: []
         }]);
       } finally {
@@ -100,16 +109,21 @@ function App() {
                     <Link
                       key={project.slug}
                       to={`/project/${project.slug}`}
-                      className="group relative aspect-video overflow-hidden rounded-lg bg-gray-900 transition-transform hover:scale-105"
+                      className="group relative aspect-[4/5] overflow-hidden rounded-lg bg-gray-900 transition-transform hover:scale-105"
                     >
                       <img
                         src={project.thumbnailUrl}
                         alt={project.title}
                         className="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-30"
-                        onError={(e) => {
-                          // If the thumbnail fails to load, use a backup image
-                          (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070";
+                        onLoad={() => {
+                          console.log(`✅ Image loaded successfully: ${project.thumbnailUrl}`);
                         }}
+                        // Comment out the error handler to see if that's causing issues
+                        // onError={(e) => {
+                        //   console.error(`❌ Image failed to load: ${project.thumbnailUrl}`);
+                        //   // If the thumbnail fails to load, use a backup image
+                        //   (e.target as HTMLImageElement).src = DEFAULT_IMAGE_URL;
+                        // }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
                         <div className="absolute bottom-0 p-6">
