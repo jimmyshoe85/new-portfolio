@@ -54,7 +54,7 @@ function App() {
             <div className="flex items-center space-x-3">
               <Code2 className="w-8 h-8 text-blue-500" />
               <Link to="/" className="text-2xl font-bold hover:text-blue-500 transition-colors">
-                David Smith
+                James A. Manning
               </Link>
             </div>
             <nav className="hidden md:flex space-x-8">
@@ -71,13 +71,15 @@ function App() {
       <section className="relative h-[70vh] flex items-center">
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Software Developer</h1>
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">Low/No-Code Developer</h1>
           <p className="text-xl text-gray-300 max-w-2xl mb-8">
-            I'm a software developer specializing in building exceptional digital experiences.
-            Currently focused on developing accessible, responsive web applications.
+          An explorer at the intersection of AI and web development. As a low/no-code enthusiast, 
+      I'm building experimental web apps to understand AI-assisted coding and discover how these
+      emerging technologies can transform traditional development workflows into something
+      more accessible and creative.
           </p>
           <a
-            href="https://github.com/jamesmanning"
+            href="https://github.com/jimmyshoe85"
             className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
           >
             <Github className="w-5 h-5 mr-2" />
