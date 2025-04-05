@@ -13,9 +13,21 @@ function App() {
     async function loadProjects() {
       try {
         const projectData = await getProjects();
+        console.log('Loaded projects in App.tsx:', projectData);
         setProjects(projectData);
       } catch (error) {
         console.error('Error loading projects:', error);
+        // Set fallback project data
+        setProjects([{
+          title: "DevConnect",
+          slug: "devconnect",
+          tools: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+          github: "https://github.com/jamesmanning/devconnect",
+          date: "2025-04-05",
+          description: "A social platform for developers to connect and collaborate",
+          thumbnailUrl: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070",
+          screenshots: []
+        }]);
       } finally {
         setIsLoading(false);
       }
@@ -75,6 +87,13 @@ function App() {
                 <div className="flex justify-center items-center h-64">
                   <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                 </div>
+              ) : projects.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-64">
+                  <p className="text-xl text-gray-400">No projects found in the projects directory.</p>
+                  <p className="text-gray-500 mt-2">
+                    Make sure you have project folders with project.json and details.md files.
+                  </p>
+                </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {projects.map((project) => (
@@ -87,6 +106,10 @@ function App() {
                         src={project.thumbnailUrl}
                         alt={project.title}
                         className="absolute inset-0 h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-30"
+                        onError={(e) => {
+                          // If the thumbnail fails to load, use a backup image
+                          (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070";
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
                         <div className="absolute bottom-0 p-6">
@@ -101,9 +124,11 @@ function App() {
                               </span>
                             ))}
                           </div>
-                          <p className="text-gray-300 text-sm line-clamp-2">
-                            {project.description}
-                          </p>
+                          {project.description && (
+                            <p className="text-gray-300 text-sm line-clamp-2">
+                              {typeof project.description === 'string' && project.description.substring(0, 120)}...
+                            </p>
+                          )}
                         </div>
                       </div>
                     </Link>
