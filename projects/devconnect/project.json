@@ -1,0 +1,7 @@
+{
+  "title": "DevConnect",
+  "slug": "devconnect",
+  "tools": ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+  "github": "https://github.com/jamesmanning/devconnect",
+  "date": "2025-04-05"
+}
